@@ -8,7 +8,6 @@ on:
 
 jobs:
   checks:
-    if: github.event_name != 'push'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -25,9 +24,11 @@ jobs:
           npm i
           fi
           npm run lint
+          npm run typecheck
           npm run build
   gh-release:
     if: github.event_name != 'pull_request'
+    needs: [checks]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
